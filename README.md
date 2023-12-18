@@ -36,6 +36,9 @@ func (x *BtypeViewer) A() (v *AtypeViewer) {
 ```
 **Error in writer (see next paragraph)**
 
+We allocate memory for the nested structure twice, because we fall into the condition `if offset == 0`  
+We need to avoid double allocation and just write data with valid offset.
+
 # Temporary patch
 It can help:
 ```
