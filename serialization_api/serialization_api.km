@@ -1,0 +1,11 @@
+karmem api @packed(true) @golang.package(`serialization_api`);
+
+struct Atype inline {
+    UintField uint32;
+    IntField int32;
+    BoolField bool;
+}
+
+struct Btype inline {
+    A Atype;
+}
