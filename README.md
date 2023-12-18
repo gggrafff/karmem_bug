@@ -20,17 +20,28 @@ panic: 42 == msg1.A.IntField != msg2.A.IntField == 0
 ```
 
 # What is solution
-I think that the following part of generated code is invalid:  
+~~I think that the following part of generated code is invalid:~~  
 ```
 func (x *BtypeViewer) A() (v *AtypeViewer) {
 	return (*AtypeViewer)(unsafe.Add(unsafe.Pointer(&x._data), 0))
 }
 ```
-We need use the correct offset instead of 0
+~~We need use the correct offset instead of 0~~
 
-The following code fixes the problem:  
+~~The following code fixes the problem:~~  
 ```
 func (x *BtypeViewer) A() (v *AtypeViewer) {
 	return (*AtypeViewer)(unsafe.Add(unsafe.Pointer(&x._data), x.size()))
 }
 ```
+**Error in writer (see next paragraph)**
+
+# Temporary patch
+It can help:
+```
+struct Btype inline {
+    FakeField int32;
+    A Atype;
+}
+```
+And this gives a smaller encoded message than the original example. Thus, we can conclude that the **error in the writer**
